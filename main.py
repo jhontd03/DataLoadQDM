@@ -35,7 +35,7 @@ if __name__ == "__main__":
         process_sqcli = start_sqcli_process(
             path_sqcli_exe=kwargs['path_sqcli_exe'],
             symbol=f"{symbol}{kwargs['postfix_symbol_sqx']}",
-            instrument=f"{symbol}kwargs['postfix_instrument_sqx']",
+            instrument=f"{symbol}{kwargs['postfix_instrument_sqx']}",
             timezone=kwargs['timezone'],
             filepath=csv_file_path,
         )
