@@ -1,5 +1,6 @@
 list_symbols :
- - XAUUSD
+ - XAUUSD : XAUUSDOCT2
+ - NDX : NQOCT2
 
 init_date : '2018.01.01'
 end_date : ''
