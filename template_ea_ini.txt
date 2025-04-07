@@ -1,0 +1,31 @@
+﻿[Common]
+Login=# Login
+Password=# Password
+
+[StartUp]
+Symbol=# symbol
+Period=# time_frame
+Expert=# expert_path
+ExpertParameters=# name_expert
+Template=Tester
+
+[Tester]
+Expert=# expert_path
+ExpertParameters=# name_expert
+Symbol=# symbol
+Period=# time_frame
+FromDate=# init_date
+ToDate=# end_date
+Visualization=0
+Execution=0
+Login=# Login
+Deposit=100000
+Currency=USD
+Leverage=1:30
+PipsCalculation=1
+Model=# Model
+ExecutionMode=0
+Optimization=0
+OptimizationCriterion=6
+ForwardMode=0
+ShutdownTerminal=1

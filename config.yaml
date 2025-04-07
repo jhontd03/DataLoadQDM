@@ -1,0 +1,27 @@
+list_symbols :
+ - XAUUSD
+
+init_date : '2018.01.01'
+end_date : ''
+mode_load_data : 'ticks'
+
+postfix_symbol_sqx : '_DWX'
+postfix_instrument_sqx : '_Darwinex'
+timezone : 'UTC+02'
+
+selector_load_data:
+  ticks:
+    file: SQ_TickDataExportEA.ex5
+    Model: 0
+  minute:
+    file: SQ_MinuteDataExportEA.ex5
+    Model: 2
+
+timeframe : 'M1'
+
+path_sqcli_exe : 'E:\\algorithmic_trading\\StrategyQuantX_142\\sqcli.exe'
+path_template_ea_ini : 'template_ea_ini.txt'
+path_metatrader_exe : 'E:\\algorithmic_trading\\Metatrader5\\Metatrader5_Base\\terminal64.exe'
+path_config_ini : 'E:\\algorithmic_trading\Metatrader5\Metatrader5_Base\\config\\DataExportEA.ini'
+path_export_data_csv : 'C:\\Users\JhonJairo\\AppData\\Roaming\\MetaQuotes\\Tester\\24BCFC2A4AFBFCF3955710081F33E57D\\Agent-127.0.0.1-3000\\MQL5\\Files'
+expert_path : 'C:\\Users\\JhonJairo\\AppData\Roaming\\MetaQuotes\\Terminal\\24BCFC2A4AFBFCF3955710081F33E57D\\MQL5\\Experts'
