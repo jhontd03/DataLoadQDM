@@ -3,7 +3,7 @@ list_symbols :
 
 init_date : '2018.01.01'
 end_date : ''
-mode_load_data : 'ticks'
+mode_load_data : 'minute'
 
 postfix_symbol_sqx : '_DWX'
 postfix_instrument_sqx : '_Darwinex'
