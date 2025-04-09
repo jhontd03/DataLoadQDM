@@ -1,13 +1,22 @@
 list_symbols :
- - XAUUSD : XAUUSDOCT2
- - NDX : NQOCT2
+ - NQOCT : 
+     symbol_mt5 : NDX
+     timeframe : minute
+ - XAUUSDOCT : 
+     symbol_mt5 : XAUUSD
+     timeframe : minute
+ - NQOCT2 : 
+     symbol_mt5 : NDX
+     timeframe : ticks
+ - XAUUSDOCT2 : 
+     symbol_mt5 : XAUUSD
+     timeframe : ticks
 
 init_date : '2018.01.01'
 end_date : ''
-mode_load_data : 'minute'
 
-postfix_symbol_sqx : '_DWX'
-postfix_instrument_sqx : '_Darwinex'
+postfix_symbol_sqx : ''
+postfix_instrument_sqx : '_darwinex'
 timezone : 'UTC+02'
 
 selector_load_data:

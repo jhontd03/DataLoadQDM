@@ -1,6 +1,7 @@
 import os
 import yaml
-from typing import Dict, Any, List
+import json
+from typing import Dict, Any, List, Tuple
 from datetime import datetime
 
 
@@ -63,10 +64,6 @@ def load_init_file(symbol: str, **kwargs: Any) -> None:
     with open(kwargs['path_template_ea_ini'], "r") as archivo:
         lineas = archivo.readlines()
     
-    # Set end_date to current date if not provided
-    if kwargs['end_date'] == '':
-        kwargs['end_date'] = datetime.now().strftime('%Y-%m-%d')
-    
     # Replace placeholders with actual values
     replacements = {
         "# name_expert": kwargs['name_expert'],
@@ -121,7 +118,7 @@ def load_yaml(file_path: str) -> Dict[str, Any]:
         return yaml.safe_load(file)
 
 
-def drop_csv_files(kwargs: Dict[str, str]) -> None:
+def drop_csv_files(kwargs: Dict[str, str]) -> Tuple[int, List[str]]:
     """
     Delete all CSV files in a specified directory.
     
@@ -135,8 +132,8 @@ def drop_csv_files(kwargs: Dict[str, str]) -> None:
     
     Returns
     -------
-    None
-        The function removes all files with '.csv' extension in the specified directory.
+    Tuple[int, List[str]]
+        A tuple containing the count of deleted files and a list of the deleted filenames
     
     Notes
     -----
@@ -144,9 +141,87 @@ def drop_csv_files(kwargs: Dict[str, str]) -> None:
     
     Examples
     --------
-    >>> drop_csv_files({'path_export_data_csv': 'data/exports'})
+    >>> deleted_count, deleted_files = drop_csv_files({'path_export_data_csv': 'data/exports'})
+    >>> print(f"Deleted {deleted_count} files: {', '.join(deleted_files)}")
     """
     csv_file_list: List[str] = os.listdir(kwargs['path_export_data_csv'])
+    deleted_files = []
+    
     for csv_file in csv_file_list:
         if csv_file.endswith(".csv"):
-            os.remove(os.path.join(kwargs['path_export_data_csv'], csv_file))
+            full_path = os.path.join(kwargs['path_export_data_csv'], csv_file)
+            try:
+                os.remove(full_path)
+                deleted_files.append(csv_file)
+            except Exception as e:
+                # If deletion fails, don't add to deleted_files list
+                pass
+                
+    return len(deleted_files), deleted_files
+
+
+def load_symbol_log(log_file_path: str = 'logs/symbol_status.json') -> Dict[str, str]:
+    """
+    Load the symbol status log file containing the last processed date for each symbol.
+    
+    Parameters
+    ----------
+    log_file_path : str, optional
+        Path to the symbol status log file, by default 'logs/symbol_status.json'
+    
+    Returns
+    -------
+    Dict[str, str]
+        Dictionary with symbol names as keys and their last processed dates as values.
+        Returns an empty dictionary if the file doesn't exist or has invalid content.
+    
+    Examples
+    --------
+    >>> symbol_log = load_symbol_log()
+    >>> print(symbol_log['EURUSD'])
+    '2023-05-01'
+    """
+    try:
+        if os.path.exists(log_file_path):
+            with open(log_file_path, 'r') as file:
+                return json.load(file)
+        return {}
+    except (json.JSONDecodeError, IOError):
+        # Return empty dict if file doesn't exist or is corrupted
+        return {}
+
+
+def update_symbol_log(symbol: str, end_date: str, log_file_path: str = 'logs/symbol_status.json') -> None:
+    """
+    Update the symbol status log with the latest processed date for a symbol.
+    
+    Parameters
+    ----------
+    symbol : str
+        The symbol name to update.
+    end_date : str
+        The date string representing when the symbol was last processed.
+    log_file_path : str, optional
+        Path to the symbol status log file, by default 'logs/symbol_status.json'
+    
+    Returns
+    -------
+    None
+        Updates the log file with the new end date for the specified symbol.
+    
+    Examples
+    --------
+    >>> update_symbol_log('EURUSD', '2023-05-15')
+    """
+    # Load existing log data
+    symbol_log = load_symbol_log(log_file_path)
+    
+    # Update with new information
+    symbol_log[symbol] = end_date
+    
+    # Create directory if it doesn't exist
+    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
+    
+    # Save updated log
+    with open(log_file_path, 'w') as file:
+        json.dump(symbol_log, file, indent=4)
